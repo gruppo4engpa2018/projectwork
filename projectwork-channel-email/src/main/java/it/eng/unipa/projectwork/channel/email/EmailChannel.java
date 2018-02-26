@@ -17,7 +17,7 @@ public class EmailChannel extends AbstractChannel {
 		this.email = email;
 	}
 	
-	
+	//private ReceptionMail receptionMail;
 	private SendMail sendMail;
 	
 	protected void setEmailSend(SendMail sendMail){
