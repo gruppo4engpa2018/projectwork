@@ -611,7 +611,6 @@
         <outbound-socket-binding name="projectwork-mail-smtp">
             <remote-destination host="smtp.gmail.com" port="465"/>
         </outbound-socket-binding>
-        </outbound-socket-binding>
         <outbound-socket-binding name="projectwork-mail-pop3">
             <remote-destination host="pop.gmail.com" port="995"/>
         </outbound-socket-binding>
