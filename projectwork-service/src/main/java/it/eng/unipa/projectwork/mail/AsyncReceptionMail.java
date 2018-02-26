@@ -14,7 +14,7 @@ import it.eng.unipa.projectwork.email.Message.TYPE;
 import it.eng.unipa.projectwork.model.User;
 import it.eng.unipa.projectwork.service.UserService;
 
-@MessageDriven(name = "AsyncSendMail", mappedName = "AsyncSendMail", messageListenerInterface = MessageListener.class,
+@MessageDriven(name = "AsyncReceptionMail", mappedName = "AsyncReceptionMail", messageListenerInterface = MessageListener.class,
 activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
 		@ActivationConfigProperty(propertyName = "destination", propertyValue = "java:/jms/queue/EmailQueue")})
