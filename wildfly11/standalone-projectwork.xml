@@ -173,7 +173,7 @@
                         5432
                     </xa-datasource-property>
                     <xa-datasource-property name="DatabaseName">
-                        projectwork
+                        gruppo04
                     </xa-datasource-property>
                     <driver>postgresql</driver>
                     <security>
@@ -445,9 +445,9 @@
             <mail-session name="default" jndi-name="java:jboss/mail/Default">
                 <smtp-server outbound-socket-binding-ref="mail-smtp"/>
             </mail-session>
-            <mail-session name="java:jboss/mail/Gmail" debug="false" jndi-name="java:jboss/mail/Gmail">
-                <smtp-server outbound-socket-binding-ref="mail-smtp" 
-                ssl="true" tls="false" username="gruppo4eng2018@gmail.com" password="gruppo0412"/>
+            <mail-session name="Gmail" debug="false" jndi-name="java:jboss/mail/projectwork">
+                <smtp-server outbound-socket-binding-ref="projectwork-mail-smtp" ssl="true" tls="false" username="gruppo4eng2018@gmail.com" password="gruppo412"/>
+                <pop3-server outbound-socket-binding-ref="projectwork-mail-pop3" ssl="true" tls="false" username="gruppo4eng2018@gmail.com" password="gruppo412"/>
             </mail-session>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:messaging-activemq:2.0">
@@ -610,6 +610,10 @@
         </outbound-socket-binding>
         <outbound-socket-binding name="projectwork-mail-smtp">
             <remote-destination host="smtp.gmail.com" port="465"/>
+        </outbound-socket-binding>
+        </outbound-socket-binding>
+        <outbound-socket-binding name="projectwork-mail-pop3">
+            <remote-destination host="pop.gmail.com" port="995"/>
         </outbound-socket-binding>
     </socket-binding-group>
 </server>
