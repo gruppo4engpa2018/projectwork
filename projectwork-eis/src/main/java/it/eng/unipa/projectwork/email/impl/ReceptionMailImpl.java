@@ -10,11 +10,11 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
 import it.eng.unipa.projectwork.email.Message;
-import it.eng.unipa.projectwork.email.RceptionMail;
+import it.eng.unipa.projectwork.email.ReceptionMail;
 import it.eng.unipa.projectwork.email.Message.TYPE;
 import it.eng.unipa.projectwork.email.exception.MailNotSendException;
 
-public class ReceptionMailImpl implements RceptionMail {
+public class ReceptionMailImpl implements ReceptionMail {
 	
 	@Resource(mappedName="java:jboss/mail/projectwork")
 	Session mailSession;

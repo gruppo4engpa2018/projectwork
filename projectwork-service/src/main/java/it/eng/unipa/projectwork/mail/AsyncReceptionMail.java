@@ -8,11 +8,16 @@ import javax.ejb.MessageDriven;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-
-import it.eng.unipa.projectwork.email.RecepitonMail;
+import it.eng.unipa.projectwork.email.ReceptionMail;
+import it.eng.unipa.projectwork.email.impl.ReceptionMailImpl;
 import it.eng.unipa.projectwork.email.Message.TYPE;
 import it.eng.unipa.projectwork.model.User;
 import it.eng.unipa.projectwork.service.UserService;
+
+@MessageDriven(name = "AsyncSendMail", mappedName = "AsyncSendMail", messageListenerInterface = MessageListener.class,
+activationConfig = {
+		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+		@ActivationConfigProperty(propertyName = "destination", propertyValue = "java:/jms/queue/EmailQueue")})
 
 public class AsyncReceptionMail implements MessageListener {
 	@EJB
@@ -31,7 +36,7 @@ public class AsyncReceptionMail implements MessageListener {
 			String type = mapMessage.getString("TYPE");
 			List<User> users = userService.allUsers();
 			for(User user : users){
-				receptioMail.receptioMail(new it.eng.unipa.projectwork.email.Message(subject, body,TYPE.valueOf(type)), user.getEmail());
+		//	receptionMail.receptionMail(new Message(legge un messaggio) /*new it.eng.unipa.projectwork.email.Message(subject, body,TYPE.valueOf(type)), user.getEmail()*/);
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -41,12 +46,7 @@ public class AsyncReceptionMail implements MessageListener {
 
 	}
 
-}
-@MessageDriven(name = "AsyncSendMail", mappedName = "AsyncSendMail", messageListenerInterface = MessageListener.class,
-activationConfig = {
-		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-		@ActivationConfigProperty(propertyName = "destination", propertyValue = "java:/jms/queue/EmailQueue")
-})
+
 
 	
 	
