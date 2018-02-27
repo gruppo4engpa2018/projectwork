@@ -23,7 +23,12 @@ public class EmailChannel extends AbstractChannel {
 	protected void setEmailSend(SendMail sendMail){
 		this.sendMail = sendMail;
 	}
-
+/*	@Override    deve creare una nuova bid
+	public void ReceptionAuctionEvent(AuctionEvent message) {
+		if(receptionMail==null){
+			throw new RuntimeException("receptionMail is null");
+		}
+	}*/
 	@Override
 	public void sendAuctionEvent(AuctionEvent message) {
 		if(sendMail==null){

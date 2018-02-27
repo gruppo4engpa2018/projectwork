@@ -36,7 +36,7 @@ public class AsyncReceptionMail implements MessageListener {
 			String type = mapMessage.getString("TYPE");
 			List<User> users = userService.allUsers();
 			for(User user : users){
-		//	receptionMail.receptionMail(new Message(legge un messaggio) /*new it.eng.unipa.projectwork.email.Message(subject, body,TYPE.valueOf(type)), user.getEmail()*/);
+		receptionMail.receptionMail(new it.eng.unipa.projectwork.email.Message(subject, body,TYPE.valueOf(type)), user.getEmail());
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
