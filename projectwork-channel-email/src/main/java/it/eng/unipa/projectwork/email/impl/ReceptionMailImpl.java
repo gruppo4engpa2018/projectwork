@@ -1,4 +1,5 @@
 package it.eng.unipa.projectwork.email.impl;
+//package it.eng.unipa.projectwork.email.impl;
 
 import java.util.Properties;
 import it.eng.unipa.projectwork.email.SendMail;
