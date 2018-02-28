@@ -2,5 +2,35 @@
     <wb-module deploy-name="projectwork-ear-0.0.1-SNAPSHOT">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
+        <dependent-module archiveName="projectwork-service.jar" deploy-path="/" handle="module:/resource/projectwork-service/projectwork-service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="projectwork-eis.jar" deploy-path="/" handle="module:/resource/projectwork-eis/projectwork-eis">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="projectwork-channel-websocket.jar" deploy-path="/" handle="module:/resource/projectwork-channel-websocket/projectwork-channel-websocket">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="projectwork-channel-email.jar" deploy-path="/" handle="module:/resource/projectwork-channel-email/projectwork-channel-email">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="projectwork-ws-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/projectwork-ws/projectwork-ws">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="projectwork-web-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/projectwork-web/projectwork-web">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="projectwork-service-interface-0.0.1-SNAPSHOT.jar" deploy-path="/invokers" handle="module:/resource/projectwork-service-interface/projectwork-service-interface">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="projectwork-eis-interface-0.0.1-SNAPSHOT.jar" deploy-path="/invokers" handle="module:/resource/projectwork-eis-interface/projectwork-eis-interface">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="projectwork-model-0.0.1-SNAPSHOT.jar" deploy-path="/invokers" handle="module:/resource/projectwork-model/projectwork-model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-io-2.2.jar" deploy-path="/invokers" handle="module:/classpath/var/M2_REPO/commons-io/commons-io/2.2/commons-io-2.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

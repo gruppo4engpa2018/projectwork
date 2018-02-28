@@ -22,7 +22,7 @@
             <!-- Hibernate properties -->
             
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
             <!-- 
              <property name="hibernate.hbm2ddl.auto" value="create-drop" />
 			<property name="javax.persistence.sql-load-script-source" value="META-INF/data.sql"/>

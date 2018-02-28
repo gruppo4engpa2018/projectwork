@@ -114,8 +114,7 @@
 	<modules>
 		<module>projectwork-model</module>
 		<module>projectwork-eis</module>
-		<module>projectwork-service</module>
-		<module>projectwork-ear</module>
+		<module>projectwork-service</module>	
 		<module>projectwork-eis-interface</module>
 		<module>projectwork-service-interface</module>
 		<module>projectwork-web</module>
@@ -123,5 +122,6 @@
 		<module>projectwork-ws-signature</module>
 		<module>projectwork-channel-websocket</module>
 		<module>projectwork-channel-email</module>
+		<module>projectwork-ear</module>
 	</modules>
 </project>

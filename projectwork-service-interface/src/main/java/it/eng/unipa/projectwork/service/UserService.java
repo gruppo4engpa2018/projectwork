@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import it.eng.unipa.projectwork.model.Supplier;
 import it.eng.unipa.projectwork.model.User;
 
 @Local
@@ -12,5 +13,7 @@ public interface UserService {
 	public List<User> allUsers();
 	
 	public User getUser(String username);
+
+	public Supplier getSupplierFromEmail(String mittente);
 
 }

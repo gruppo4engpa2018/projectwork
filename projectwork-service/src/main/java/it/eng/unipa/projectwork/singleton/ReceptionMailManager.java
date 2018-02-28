@@ -1,7 +1,5 @@
 package it.eng.unipa.projectwork.singleton;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -9,25 +7,35 @@ import javax.ejb.Schedule;
 import javax.ejb.Schedules;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import it.eng.unipa.projectwork.email.Message;
 import it.eng.unipa.projectwork.email.Message.TYPE;
 import it.eng.unipa.projectwork.email.ReceptionMail;
-import it.eng.unipa.projectwork.email.exception.MailNotReceptionException;
+import it.eng.unipa.projectwork.email.SendMail;
+import it.eng.unipa.projectwork.email.exception.MailNotSendException;
 import it.eng.unipa.projectwork.model.Auction;
+import it.eng.unipa.projectwork.model.Supplier;
 import it.eng.unipa.projectwork.service.AuctionService;
+import it.eng.unipa.projectwork.service.UserService;
 
 @Singleton
 @Startup
 public class ReceptionMailManager {
 
+	@EJB
+	UserService userService;
 
 	@EJB
 	AuctionService auctionService;
 
 
 	@EJB
-	ReceptionMail ReceptionMail;
+	ReceptionMail receptionMail;
+	
+	@EJB
+	SendMail sendMail;
 
 	/**
 	 * 
@@ -39,16 +47,19 @@ public class ReceptionMailManager {
 	 */
 
 	@Schedules ({
-		/*@Schedule(minute="0",hour="*",persistent=false)
-		/*,
-	    @Schedule(dayOfMonth="Last")
-	    @Schedule(dayOfWeek="Fri", hour="23")
-		 */
-		@Schedule(minute="0/5", persistent=false)	/// Controlla nuove mail ogni 5 minuti
-
+		@Schedule(second="0",minute="*",hour="*",persistent=false)
 		
 	})
 	public void receptionMail() {
+		
+		List<Message> l = receptionMail.getMails();
+		for(Message message: l) {
+			try {
+				eleaboraSingolaMail(message);
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		//checkMail();
 	}
@@ -67,7 +78,27 @@ public class ReceptionMailManager {
 		}
 	}
 */
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	private void eleaboraSingolaMail(Message message) throws MailNotSendException {
+		Message response = new Message("ERRORE ELABORAZIONE AUCTION", "dd", TYPE.HTML);
+		try {
+			Supplier user = userService.getSupplierFromEmail(message.getMittente());
+			if(user!=null) {
+				Auction auction = convertiMessaggioInAuction(message);
+				if(auction!=null) {
+					Auction aret = auctionService.add(auction, user.getUsername(), (a)->a);
+					response = new Message("OK AUCTION "+aret.getOid(), "OK", TYPE.HTML);
+				}
+			}
+		}finally {
+			sendMail.sendMail(response, message.getMittente());
+		}
+	}
 
+	private Auction convertiMessaggioInAuction(Message message) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	private String body(List<Auction> as){
 		StringBuilder sb = new StringBuilder("<table>");
 		sb.append("<tr><th>").append("title").append("</th>").append("<th>").append("description").append("</th></tr>");
