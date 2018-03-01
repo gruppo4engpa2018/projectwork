@@ -106,10 +106,10 @@ public class ReceptionMailManager {
 	}
 
 	private Auction convertiMessaggioInAuction(Message message) throws ParseException {	
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-		Map<String,String> bodyMap=new HashMap<>();
+		Map<String,String> bodyMap=SplitBodyLine2(message.getBody());
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");		
         Date startAuction = formatter.parse(bodyMap.get("INIZIO ASTA"));
-            //System.out.println(formatter.format(date));
+        //System.out.println(formatter.format(date));
         Date endAuction = formatter.parse(bodyMap.get("FINE ASTA"));		
 		String title = message.getSubject();
 		String description = bodyMap.get("DESCRIZIONE");
