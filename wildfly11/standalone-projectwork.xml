@@ -447,7 +447,9 @@
             </mail-session>
             <mail-session name="Gmail" debug="false" jndi-name="java:jboss/mail/projectwork">
                 <smtp-server outbound-socket-binding-ref="projectwork-mail-smtp" ssl="true" tls="false" username="gruppo4eng2018@gmail.com" password="gruppo412"/>
-                <pop3-server outbound-socket-binding-ref="projectwork-mail-pop3" ssl="true" tls="false" username="gruppo4eng2018@gmail.com" password="gruppo412"/>
+            </mail-session>
+            <mail-session name="Pop3Gmail" debug="false" jndi-name="java:jboss/mail/projectworkreceive">
+                <pop3-server outbound-socket-binding-ref="projectwork-mail-pop3" ssl="true" tls="true" username="gruppo4eng2018@gmail.com" password="gruppo412"/>
             </mail-session>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:messaging-activemq:2.0">
