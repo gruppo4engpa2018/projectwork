@@ -32,5 +32,8 @@
         <dependent-module archiveName="commons-io-2.2.jar" deploy-path="/invokers" handle="module:/classpath/var/M2_REPO/commons-io/commons-io/2.2/commons-io-2.2.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="jsoup-1.8.3.jar" deploy-path="/invokers" handle="module:/classpath/var/M2_REPO/org/jsoup/jsoup/1.8.3/jsoup-1.8.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

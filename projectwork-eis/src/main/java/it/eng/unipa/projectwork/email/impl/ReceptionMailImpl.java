@@ -15,6 +15,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
+import javax.mail.internet.MimeMultipart;
 
 import org.apache.commons.io.IOUtils;
 
@@ -26,6 +27,7 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Part;
+import javax.mail.Provider;
 import javax.mail.Session;
 import javax.mail.Store;
 
@@ -38,8 +40,8 @@ import it.eng.unipa.projectwork.email.exception.MailNotSendException;
 @Stateless
 public class ReceptionMailImpl implements ReceptionMail {
 
-//	@Resource(mappedName="java:jboss/mail/projectworkreceive")
-//	Session mailSession;
+	@Resource(mappedName="java:jboss/mail/projectworkreceive")
+	Session emailSession;
 
 	//public static void check(String host, String storeType, String user,
 	//    String password)
@@ -49,9 +51,19 @@ public class ReceptionMailImpl implements ReceptionMail {
 
 		try {
 
-			//create the POP3 store object and connect with the pop server
-			Store store = mailSession.getStore("pop3s");
-			store.connect(System.getProperty("pop3.username"),System.getProperty("pop3.password"));
+//				Properties properties = new Properties();
+//
+//		      properties.put("mail.pop3.host", "pop.gmail.com");
+//		      properties.put("mail.pop3.port", "995");
+//		      properties.put("mail.debug","true");
+//		      properties.put("mail.pop3.starttls.enable", "true");
+//		      Session emailSession = Session.getDefaultInstance(properties);
+//		      for(Provider p : emailSession.getProviders()) {
+//		    	  System.out.println(p);
+//		      }
+//		      //create the POP3 store object and connect with the pop server
+		      Store store = emailSession.getStore("pop3s");
+			store.connect("pop.gmail.com","gruppo4eng2018@gmail.com","gruppo412");
 			//create the folder object and open it
 			Folder emailFolder = store.getFolder("INBOX");
 			
@@ -67,11 +79,11 @@ public class ReceptionMailImpl implements ReceptionMail {
 				System.out.println("Email Number " + (i + 1));
 				System.out.println("Subject: " + message.getSubject());
 				System.out.println("From: " + message.getFrom()[0]);
-				System.out.println("Text: " + message.getContent().toString());
+				System.out.println("Text: " + ((MimeMultipart)message.getContent()).toString());
 				// message.get
 				try {
 
-					ret.add(new Message(message.getFrom()[0].toString(), message.getSubject(), message.getContent().toString(),TYPE.HTML, elab(message)));
+					ret.add(elab(message));
 
 				}catch (Exception e) {
 					e.printStackTrace();
@@ -82,7 +94,7 @@ public class ReceptionMailImpl implements ReceptionMail {
 			}
 
 			//close the store and folder objects
-			emailFolder.close(false);
+			emailFolder.close(true);
 			store.close();
 
 		} catch (Exception e) {
@@ -93,8 +105,10 @@ public class ReceptionMailImpl implements ReceptionMail {
 	}
 
 
-	public List<Attachment> elab(javax.mail.Message message) throws IOException, MessagingException {
+	public Message elab(javax.mail.Message message) throws IOException, MessagingException {
 		List<Attachment> l = new ArrayList<>();
+		String subject = message.getSubject();
+		String body = getTextFromMessage(message);
 		Multipart multipart = (Multipart) message.getContent();
 
 		for (int i = 0; i < multipart.getCount(); i++) {
@@ -102,13 +116,43 @@ public class ReceptionMailImpl implements ReceptionMail {
 			if(Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition())) {
 				String fileName = bodyPart.getFileName();
 				String mimeType = evalMimeType(fileName);
-				byte[] body = IOUtils.toByteArray(bodyPart.getInputStream());
-				l.add(new Attachment(body, fileName, mimeType));
+				byte[] bodyB = IOUtils.toByteArray(bodyPart.getInputStream());
+				l.add(new Attachment(bodyB, fileName, mimeType));
 			}
 
 		}
-		return l;
+		return new Message(subject, body, TYPE.HTML, l);
 
+	}
+	
+	private String getTextFromMessage(javax.mail.Message message) throws MessagingException, IOException {
+	    String result = "";
+	    if (message.isMimeType("text/plain")) {
+	        result = message.getContent().toString();
+	    } else if (message.isMimeType("multipart/*")) {
+	        MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
+	        result = getTextFromMimeMultipart(mimeMultipart);
+	    }
+	    return result;
+	}
+
+	private String getTextFromMimeMultipart(
+	        MimeMultipart mimeMultipart)  throws MessagingException, IOException{
+	    String result = "";
+	    int count = mimeMultipart.getCount();
+	    for (int i = 0; i < count; i++) {
+	        BodyPart bodyPart = mimeMultipart.getBodyPart(i);
+	        if (bodyPart.isMimeType("text/plain")) {
+	            result = result + "\n" + bodyPart.getContent();
+	            break; // without break same text appears twice in my tests
+	        } else if (bodyPart.isMimeType("text/html")) {
+	            String html = (String) bodyPart.getContent();
+	            result = result + "\n" + org.jsoup.Jsoup.parse(html).text();
+	        } else if (bodyPart.getContent() instanceof MimeMultipart){
+	            result = result + getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent());
+	        }
+	    }
+	    return result;
 	}
 
 

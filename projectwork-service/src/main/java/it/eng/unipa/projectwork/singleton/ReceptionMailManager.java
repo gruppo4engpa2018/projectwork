@@ -1,5 +1,7 @@
 package it.eng.unipa.projectwork.singleton;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -16,7 +18,9 @@ import it.eng.unipa.projectwork.email.ReceptionMail;
 import it.eng.unipa.projectwork.email.SendMail;
 import it.eng.unipa.projectwork.email.exception.MailNotSendException;
 import it.eng.unipa.projectwork.model.Auction;
+import it.eng.unipa.projectwork.model.Product;
 import it.eng.unipa.projectwork.model.Supplier;
+import it.eng.unipa.projectwork.model.pricingstrategy.PRICING;
 import it.eng.unipa.projectwork.service.AuctionService;
 import it.eng.unipa.projectwork.service.UserService;
 
@@ -96,8 +100,22 @@ public class ReceptionMailManager {
 	}
 
 	private Auction convertiMessaggioInAuction(Message message) {
-		// TODO Auto-generated method stub
-		return null;
+//		String title = title;
+//		String description = description;
+//		String supplier = supplier;
+//		String product = product;
+//		Date startAuction = startAuction;
+//		Date endAuction = endAuction;
+//		PRICING pricing = pricing;
+//		boolean suspend  = suspend; 
+//		HashMap<String, String> ogg_mail = new HashMap<String, String>();
+//		 ogg_mail.put(mittente, message.getMittente());
+//		 ogg_mail.put(title, message.getSubject())
+//		 
+//		 
+//		return au new Auction(String title,String description,Supplier supplier,Product product,Date startAuction,Date endAuction,PRICING pricing,boolean suspend) {
+return null;
+		
 	}
 	private String body(List<Auction> as){
 		StringBuilder sb = new StringBuilder("<table>");
