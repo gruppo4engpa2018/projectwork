@@ -100,6 +100,11 @@ public class Auction extends AEntity<Long>{
 	
 	
 	
+	public Auction(String title2, String description2, String mittente, String product2, Date startAuction2,
+			Date endAuction2, Object object, boolean b) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long getOid() {
 		return oid;
 	}

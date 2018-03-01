@@ -1,8 +1,13 @@
 package it.eng.unipa.projectwork.singleton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
@@ -83,15 +88,16 @@ public class ReceptionMailManager {
 	}
 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private void eleaboraSingolaMail(Message message) throws MailNotSendException {
-		Message response = new Message("ERRORE ELABORAZIONE AUCTION", "dd", TYPE.HTML);
+	private void eleaboraSingolaMail(Message message) throws MailNotSendException, ParseException {
+		Message response = new Message("ERRORE ELABORAZIONE AUCTION", "Non è stato possibile processare la"
+				+ "tua richiesta d'inserimento Asta. Riprova!", TYPE.HTML);
 		try {
 			Supplier user = userService.getSupplierFromEmail(message.getMittente());
 			if(user!=null) {
 				Auction auction = convertiMessaggioInAuction(message);
 				if(auction!=null) {
 					Auction aret = auctionService.add(auction, user.getUsername(), (a)->a);
-					response = new Message("OK AUCTION "+aret.getOid(), "OK", TYPE.HTML);
+					response = new Message("OK AUCTION "+aret.getOid(), "OK LA TUA AUCTION E' STATA INSERITA CORRETTAMENTE", TYPE.HTML);
 				}
 			}
 		}finally {
@@ -99,24 +105,54 @@ public class ReceptionMailManager {
 		}
 	}
 
-	private Auction convertiMessaggioInAuction(Message message) {
-//		String title = title;
-//		String description = description;
-//		String supplier = supplier;
-//		String product = product;
-//		Date startAuction = startAuction;
-//		Date endAuction = endAuction;
-//		PRICING pricing = pricing;
-//		boolean suspend  = suspend; 
-//		HashMap<String, String> ogg_mail = new HashMap<String, String>();
-//		 ogg_mail.put(mittente, message.getMittente());
-//		 ogg_mail.put(title, message.getSubject())
-//		 
-//		 
-//		return au new Auction(String title,String description,Supplier supplier,Product product,Date startAuction,Date endAuction,PRICING pricing,boolean suspend) {
-return null;
-		
+	private Auction convertiMessaggioInAuction(Message message) throws ParseException {	
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+		Map<String,String> bodyMap=new HashMap<>();
+        Date startAuction = formatter.parse(bodyMap.get("INIZIO ASTA"));
+            //System.out.println(formatter.format(date));
+        Date endAuction = formatter.parse(bodyMap.get("FINE ASTA"));		
+		String title = message.getSubject();
+		String description = bodyMap.get("DESCRIZIONE");
+		String mittente = message.getMittente();
+		String product = bodyMap.get("PRODOTTO");
+//		PRICING pricing = null;
+//		boolean suspend  = false; 
+
+		 
+return new Auction(title,description,mittente,product,startAuction,endAuction,null,false);
+	}		
+
+	
+	private static Pattern twopart = Pattern.compile("(\\d+):(\\d+)");
+	
+	
+	public String[] SplitBodyLine(String body) {
+	    String split[];
+	    split = body.split("\\n");
+	    return split;
 	}
+	    
+	public Map<String,String> SplitBodyLine2(String body) {
+		Map<String,String> map=new HashMap<>();
+		String split[];
+		 split = body.split("\\n");
+		for (int i=0; i<split.length; i++) {			
+		 Matcher m = twopart.matcher(split[i]);
+	        if (m.matches()) {
+	        	map.put(""+m.group(1), ""+m.group(2));
+	        } else {
+	            map ("","");
+	        	}
+	        }
+		return map;
+	}
+		 		 
+		 private Map<String, String> map(String string, String string2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	private String body(List<Auction> as){
 		StringBuilder sb = new StringBuilder("<table>");
 		sb.append("<tr><th>").append("title").append("</th>").append("<th>").append("description").append("</th></tr>");

@@ -1,8 +1,12 @@
 package it.eng.unipa.projectwork.email;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import java.io.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 public class Message {
 	
 	public static enum TYPE{TEXT,HTML}
@@ -56,5 +60,29 @@ public class Message {
 	public TYPE getType() {
 		return type;
 	}
-
+	
+//	private static Pattern twopart = Pattern.compile("(\\d+):(\\d+)");
+//	
+//	
+//	public String[] SplitBodyLine(String body) {
+//	    String split[];
+//	    split = body.split("\\n");
+//	    return split;
+//	}
+//	    
+//	public Map<String,String> SplitBodyLine2(String s) {
+//		//Map<String,String> map=new HashMap<>();
+//		 Matcher m = twopart.matcher(s);
+//	        if (m.matches()) {
+//	            return map (""+m.group(1), ""+m.group(2));
+//	        } else {
+//	            return map ("","");
+//	        }
+//	    }
+//		 		 
+//		 private Map<String, String> map(String string, String string2) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+		
 }
